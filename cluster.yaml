@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-registry-deployment-IMAGE_TAG
+spec:
+  selector:
+    matchLabels:
+      app: ms-registry-IMAGE_TAG
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-registry-IMAGE_TAG
+    spec:
+      containers:
+      - name: ms-registry
+        image: pouch/ms-registry:IMAGE_TAG
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "java -jar -Dspring.profiles.active=dev /app.jar; while true; do sleep 30; done;" ]
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-registry-service-IMAGE_TAG
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: ms-registry-IMAGE_TAG
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-iam-deployment-IMAGE_TAG
+spec:
+  selector:
+    matchLabels:
+      app: ms-iam-IMAGE_TAG
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-iam-IMAGE_TAG
+    spec:
+      containers:
+      - name: ms-iam
+        image: pouch/ms-iam:IMAGE_TAG
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "java -jar -Dspring.profiles.active=dev /app.jar; while true; do sleep 30; done;" ]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-iam-service-IMAGE_TAG
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: ms-iam-IMAGE_TAG
+  type: LoadBalancer
