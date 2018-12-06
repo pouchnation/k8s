@@ -23,16 +23,3 @@ spec:
         imagePullPolicy: Always
       imagePullSecrets:
       - name: regcred
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ms-iam-service
-spec:
-  ports:
-  - port: 80
-    targetPort: 8080
-    protocol: TCP
-  selector:
-    app: ms-iam
-  type: LoadBalancer
