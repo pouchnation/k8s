@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-registry-deployment-BUILD_TAG
+spec:
+  selector:
+    matchLabels:
+      app: ms-registry-BUILD_TAG
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-registry-BUILD_TAG
+    spec:
+      containers:
+      - name: ms-registry
+        image: pouch/ms-registry:IMAGE_TAG
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "java -jar -Dspring.profiles.active=dev -Deureka.client.serviceUrl.defaultZone=DEFAULT_ZONE /app.jar; while true; do sleep 30; done;" ]
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-iam-deployment-BUILD_TAG
+spec:
+  selector:
+    matchLabels:
+      app: ms-iam-BUILD_TAG
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-iam-BUILD_TAG
+    spec:
+      containers:
+      - name: ms-iam
+        image: pouch/ms-iam:IMAGE_TAG
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "java -jar -Dspring.profiles.active=dev -Deureka.client.serviceUrl.defaultZone=DEFAULT_ZONE /app.jar; while true; do sleep 30; done;" ]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred

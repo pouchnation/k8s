@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-registry-service-BUILD_TAG
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: ms-registry-BUILD_TAG
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-iam-service-BUILD_TAG
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: ms-iam-BUILD_TAG
+  type: LoadBalancer
