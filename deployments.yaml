@@ -45,7 +45,7 @@ spec:
       - name: ms-iam
         image: pouch/ms-iam:IMAGE_TAG
         command: [ "/bin/bash", "-c", "--" ]
-        args: [ "java -jar -Dspring.profiles.active=dev -Deureka.client.serviceUrl.defaultZone=DEFAULT_ZONE /app.jar; while true; do sleep 30; done;" ]
+        args: [ "sh wait-for-app.sh ab8e4e77df9f611e8a4b40607028bcf7-199040594.ap-northeast-1.elb.amazonaws.com && java -jar -Dspring.profiles.active=dev -Deureka.client.serviceUrl.defaultZone=DEFAULT_ZONE /app.jar; while true; do sleep 30; done;" ]
         ports:
         - containerPort: 8080
         volumeMounts:
