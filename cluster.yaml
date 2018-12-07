@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ms-registry-deployment-IMAGE_TAG
+  name: ms-registry-deployment-BUILD_TAG
 spec:
   selector:
     matchLabels:
-      app: ms-registry-IMAGE_TAG
+      app: ms-registry-BUILD_TAG
   replicas: 1
   template:
     metadata:
       labels:
-        app: ms-registry-IMAGE_TAG
+        app: ms-registry-BUILD_TAG
     spec:
       containers:
       - name: ms-registry
@@ -27,29 +27,29 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ms-registry-service-IMAGE_TAG
+  name: ms-registry-service-BUILD_TAG
 spec:
   ports:
   - port: 80
     targetPort: 80
     protocol: TCP
   selector:
-    app: ms-registry-IMAGE_TAG
+    app: ms-registry-BUILD_TAG
   type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ms-iam-deployment-IMAGE_TAG
+  name: ms-iam-deployment-BUILD_TAG
 spec:
   selector:
     matchLabels:
-      app: ms-iam-IMAGE_TAG
+      app: ms-iam-BUILD_TAG
   replicas: 1
   template:
     metadata:
       labels:
-        app: ms-iam-IMAGE_TAG
+        app: ms-iam-BUILD_TAG
     spec:
       containers:
       - name: ms-iam
@@ -66,12 +66,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ms-iam-service-IMAGE_TAG
+  name: ms-iam-service-BUILD_TAG
 spec:
   ports:
   - port: 80
     targetPort: 8080
     protocol: TCP
   selector:
-    app: ms-iam-IMAGE_TAG
+    app: ms-iam-BUILD_TAG
   type: LoadBalancer
